@@ -1,0 +1,102 @@
+---
+title: "Classification"
+author: "Stephanie Hosang"
+date: "September 9, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#k Nearest Neighbours
+1.train dataset
+2.test dataset
+3.labels 
+4.k - # of neighbours to consider in algorithm
+```{r}
+library(class)
+pred <- knn(train,test,labels,k)
+```
+
+#Confusion matrix of predicted vs actual values
+```{r}
+table(test_pred, test_actual)
+```
+#Compute accuracy
+```{r}
+mean(test_pred == test_actual)
+```
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Naive Bayes Model
+```{r}
+library(naivebayes)
+model <- naive_bayes(y~x, data = data)
+model <- naive_bayes(y~x, data = data, laplace=1) # with laplace correction
+```
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ROC Curve
+```{r}
+library(pROC)
+
+# Create a ROC curve
+ROC <- roc(actual, predicted)
+
+# Plot the ROC curve
+plot(ROC, col = "blue")
+
+# Calculate the area under the curve (AUC)
+auc(ROC)
+```
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Stepwise Regression
+
+```{r}
+# Specify a null model with no predictors
+null_model <- glm(y ~ 1, data = data, family = "binomial")
+
+# Specify the full model using all of the potential predictors
+full_model <- glm(y ~ ., data = data, family = "binomial")
+
+# Use a forward stepwise algorithm to build a parsimonious model
+step_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "forward")
+
+# Estimate the stepwise donation probability
+step_prob <- predict(step_model, type = "response")
+```
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Decision Trees
+```{r}
+model <- rpart(y~x, data = data, method = "class", control = rpart.control(cp = 0))
+
+# Make predictions on the test dataset
+pred <- predict(model, test, type = "class")
+
+# confusion matrix
+table(pred, test$y)
+
+# accuracy
+mean(pred == test$y)
+```
+
+#Plot decision tree & complexity plot
+```{r}
+library(rpart.plot)
+rpart.plot(model)
+
+plotcp(model)
+```
+
+#Prune decision tree to cp corresponding to lowest point on complexity plot (cp1)
+```{r}
+model_pruned <- prune(model, cp = cp1)
+```
+
+
