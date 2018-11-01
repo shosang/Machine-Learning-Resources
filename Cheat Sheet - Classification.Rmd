@@ -91,7 +91,7 @@ mean(pred == test$y)
 library(rpart.plot)
 rpart.plot(model)
 
-plotcp(model)
+plotcp(model) #use smallest point above the line in the cp plot
 ```
 
 #Prune decision tree to cp corresponding to lowest point on complexity plot (cp1)
