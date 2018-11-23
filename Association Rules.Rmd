@@ -1,0 +1,47 @@
+---
+title: "Association Rules"
+author: "Stephanie Hosang"
+date: "November 22, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+pacman::p_load("arules")
+data(Groceries)
+inspect(Groceries)
+```
+
+Data must be in the transactions class to be ingested by apriori
+Suppose we have a data frame df with 2 columns: ID and product
+The following code will convert it to the transactions class
+```{r}
+# Coerce columns to factors
+df$ID <- as.factor(df$ID)
+df$product <- as.factor(df$product)
+
+# Create ItemSets - groups products by ID
+product_set <- split(product, ID)
+
+# Coerce to transactions class
+basket <- as(product_set, "transactions")
+
+```
+
+Run apriori on the Groceries dataset
+Given:
+- transactions db: Groceries
+- minimum support threshold: 0.01
+- minimum confidence threshold: 0.5
+
+```{r}
+rules <- apriori (Groceries, parameter = list(supp = 0.01, conf = 0.5)) 
+rules_conf <- sort (rules, by="confidence", decreasing=TRUE) 
+inspect(head(rules_conf))
+```
+
+

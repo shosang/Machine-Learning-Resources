@@ -1,0 +1,30 @@
+---
+title: "Recommender Sys"
+author: "Stephanie Hosang"
+date: "November 22, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pacman::p_load("recommenderlab")
+
+```
+Suppose we have a dataframe df with 3 columns: user, item, rating
+Use Cosine for the distance metric and Z-score to standardize values
+
+
+User-based Collaborative Filtering
+```{r}
+rec.u <- Recommender(r, "UBCF", param=list(normalize="Z-score", method="Cosine"))
+```
+
+Item-based Collaborative Filtering
+```{r}
+rec.i <- Recommender(r, "IBCF", param=list(normalize="Z-score", method="Cosine"))
+```
+
+
