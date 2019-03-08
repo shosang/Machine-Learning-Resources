@@ -1,0 +1,36 @@
+---
+title: "Advanced Regression Techniques"
+author: "Stephanie Hosang"
+date: "November 23, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Standard Linear Regression:
+Assumes constant variance
+
+Poisson Regression:
+Assumes the mean & variance of event arrivals are reasonably close
+
+Quasi-Poisson Regression:
+Asume variance is a linear function of the mean
+
+
+Calculate the mean and variance of the target variable
+```{r}
+(mean_df <- mean(df$target))
+(var_df <- var(df$target))
+```
+
+Fit model and glance the results
+```{r}
+model <- glm(target ~ ., data = df, family = quasipoisson)
+perf <- glance(model)
+
+# Calculate pseudo-R-squared
+pseudoR2 <- 1 - perf$deviance/perf$null.deviance
+```
+

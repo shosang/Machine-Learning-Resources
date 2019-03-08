@@ -19,12 +19,12 @@ Use Cosine for the distance metric and Z-score to standardize values
 
 User-based Collaborative Filtering
 ```{r}
-rec.u <- Recommender(r, "UBCF", param=list(normalize="Z-score", method="Cosine"))
+rec.u <- Recommender(df, "UBCF", param=list(normalize="Z-score", method="Cosine"))
 ```
 
 Item-based Collaborative Filtering
 ```{r}
-rec.i <- Recommender(r, "IBCF", param=list(normalize="Z-score", method="Cosine"))
+rec.i <- Recommender(df, "IBCF", param=list(normalize="Z-score", method="Cosine"))
 ```
 
 
